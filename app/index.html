@@ -1,0 +1,175 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sistema ZUP</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+    <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/sass-bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-switch/build/css/bootstrap3/bootstrap-switch.css" />
+    <link rel="stylesheet" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css" />
+    <link rel="stylesheet" href="bower_components/select2/select2.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="bower_components/jquery-ui/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body ng-app="zupPainelApp" detect-scroll-top>
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+    <div ng-view="" class="ng-main-view" ng-hide="isLoading"></div>
+    <div ng-show='isLoading'>Carregando...</div>
+
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/sass-bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/bootstrap-switch/build/js/bootstrap-switch.js"></script>
+    <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+    <script src="bower_components/restangular/dist/restangular.js"></script>
+    <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+    <script src="bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
+    <script src="bower_components/bootstrap/docs/assets/js/bootstrap.js"></script>
+    <script src="bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.min.js"></script>
+    <script src="bower_components/angular-file-upload/angular-file-upload.js"></script>
+    <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
+    <script src="bower_components/angular-ui-utils/mask.js"></script>
+    <script src="bower_components/ui-autocomplete/autocomplete.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/select2/select2.js"></script>
+    <script src="bower_components/angular-ui-select2/src/select2.js"></script>
+    <script src="bower_components/zeroclipboard/dist/ZeroClipboard.js"></script>
+    <script src="bower_components/ngstorage/ngStorage.js"></script>
+    <!-- endbower -->
+    <script src="bower_components/smartJQueryZoom/src/e-smart-zoom-jquery.js"></script>
+    <!-- endbuild -->
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places,geometry"></script>
+
+    <script type="text/javascript">
+    function load() {
+      gapi.client.setApiKey('AIzaSyBSEPWhyMJOCOiIAfYgQ_Siw8ijfsPKhkI');
+      gapi.client.load('urlshortener', 'v1');
+    }
+    </script>
+
+    <script src="https://apis.google.com/js/client.js?onload=load"></script>
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+
+    <script src="scripts/controllers/main.js"></script>
+
+    <script src="scripts/controllers/groups/groups.js"></script>
+    <script src="scripts/controllers/groups/view.js"></script>
+    <script src="scripts/controllers/groups/edit.js"></script>
+
+    <script src="scripts/controllers/users/users.js"></script>
+    <script src="scripts/controllers/users/view.js"></script>
+    <script src="scripts/controllers/users/edit.js"></script>
+
+    <script src="scripts/controllers/reports/reports.js"></script>
+    <script src="scripts/controllers/reports/item.js"></script>
+    <script src="scripts/controllers/reports/itemedit.js"></script>
+    <script src="scripts/controllers/reports/categories.js"></script>
+    <script src="scripts/controllers/reports/categoriesedit.js"></script>
+
+    <script src="scripts/controllers/inventories/inventories.js"></script>
+    <script src="scripts/controllers/inventories/categories.js"></script>
+    <script src="scripts/controllers/inventories/categoriesedit.js"></script>
+    <script src="scripts/controllers/inventories/categoriesselect.js"></script>
+    <script src="scripts/controllers/inventories/item.js"></script>
+    <script src="scripts/controllers/inventories/itemedit.js"></script>
+
+    <script src="scripts/controllers/flows/flows.js"></script>
+    <script src="scripts/controllers/flows/view.js"></script>
+    <script src="scripts/controllers/flows/steps.js"></script>
+
+    <script src="scripts/controllers/tags/tags.js"></script>
+
+    <script src="scripts/controllers/cases/cases.js"></script>
+    <script src="scripts/controllers/cases/edit.js"></script>
+
+    <script src="scripts/services/user.js"></script>
+    <script src="scripts/services/auth.js"></script>
+    <script src="scripts/services/error.js"></script>
+    <script src="scripts/services/groups.js"></script>
+    <script src="scripts/services/users.js"></script>
+    <script src="scripts/services/reports.js"></script>
+    <script src="scripts/services/inventories.js"></script>
+    <script src="scripts/services/advancedfilters.js"></script>
+
+    <script src="scripts/filters/formaterrors.js"></script>
+    <script src="scripts/filters/translateerrors.js"></script>
+    <script src="scripts/filters/replacedotwithcomma.js"></script>
+
+    <script src="scripts/directives/keyboardposter.js"></script>
+    <script src="scripts/directives/genericinput.js"></script>
+    <script src="scripts/directives/ngthumb.js"></script>
+    <script src="scripts/directives/map.js"></script>
+    <script src="scripts/directives/navitem.js"></script>
+    <script src="scripts/directives/detectscrolltop.js"></script>
+    <script src="scripts/directives/gallery.js"></script>
+    <script src="scripts/directives/onfocus.js"></script>
+    <script src="scripts/directives/onblur.js"></script>
+    <script src="scripts/directives/styleresultstable.js"></script>
+    <script src="scripts/directives/inputssidebar.js"></script>
+    <script src="scripts/directives/copytext.js"></script>
+    <script src="scripts/directives/stylemap.js"></script>
+    <script src="scripts/directives/focusonevent.js"></script>
+
+    <script src="scripts/directives/inventories/inventorypopover.js"></script>
+    <script src="scripts/directives/inventories/inventorypopoverlink.js"></script>
+    <script src="scripts/directives/inventories/editlabel.js"></script>
+    <script src="scripts/directives/inventories/inventorycreatevalue.js"></script>
+    <script src="scripts/directives/inventories/mapshowitem.js"></script>
+    <script src="scripts/directives/inventories/searchlatlngmap.js"></script>
+    <script src="scripts/directives/inventories/draggableinput.js"></script>
+    <script src="scripts/directives/inventories/droppableinputsarea.js"></script>
+    <script src="scripts/directives/inventories/selectlatlngmap.js"></script>
+    <script src="scripts/directives/inventories/sortablesections.js"></script>
+    <script src="scripts/directives/inventories/inventorytrigger.js"></script>
+
+    <script src="scripts/directives/reports/reportstatus.js"></script>
+    <script src="scripts/directives/reports/mapnewreport.js"></script>
+    <script src="scripts/directives/reports/mapshowreport.js"></script>
+    <script src="scripts/directives/reports/searchreportmap.js"></script>
+
+    <script src="scripts/directives/filters/addareacircleform.js"></script>
+    <script src="scripts/directives/filters/areamap.js"></script>
+    <script src="scripts/directives/filters/fieldsfilteritem.js"></script>
+
+    <script src="scripts/directives/flows/flowresolutionstate.js"></script>
+    <script src="scripts/directives/flows/flowdroppableinputsarea.js"></script>
+    <script src="scripts/directives/flows/flowstepfield.js"></script>
+    <script src="scripts/directives/flows/flowcreatevalue.js"></script>
+    <script src="scripts/directives/flows/flowsinglevalue.js"></script>
+    <script src="scripts/directives/flows/flowtrigger.js"></script>
+    <script src="scripts/directives/flows/flowstepsorder.js"></script>
+    <!-- endbuild -->
+</body>
+</html>
