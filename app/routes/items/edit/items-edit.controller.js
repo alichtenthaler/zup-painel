@@ -425,11 +425,11 @@ angular
               {
                 if (itemData[x][z] === true)
                 {
-                  selectedItems.push(z);
+                  selectedItems.push(parseInt(z));
                 }
               }
 
-              formattedData.data[x] = selectedItems;
+              if (selectedItems.length !== 0) formattedData.data[x] = selectedItems;
             }
           }
           else

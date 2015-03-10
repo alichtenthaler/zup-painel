@@ -7,7 +7,7 @@ angular
     'GalleryComponentModule'
   ])
 
-  .controller('ItemsShowController', function ($scope, Restangular, $q, $state, $modal, itemResponse, categoriesResponse) {
+  .controller('ItemsShowController', function ($scope, Restangular, $q, $state, $modal, itemResponse, categoriesResponse, itemHistoryResponse) {
     $scope.item = itemResponse.data;
 
     for (var i = categoriesResponse.data.length - 1; i >= 0; i--) {
@@ -22,6 +22,17 @@ angular
         if (typeof $scope.item.data[i].field !== 'undefined' && $scope.item.data[i].field !== null && $scope.item.data[i].field.id === parseInt(id)) // jshint ignore:line
         {
           return $scope.item.data[i].content;
+        }
+      }
+
+      return null;
+    };
+
+    $scope.getSelectedOptionsByFieldId = function(id) {
+      for (var i = $scope.item.data.length - 1; i >= 0; i--) {
+        if (typeof $scope.item.data[i].field !== 'undefined' && $scope.item.data[i].field !== null && $scope.item.data[i].field.id === parseInt(id)) // jshint ignore:line
+        {
+          return $scope.item.data[i].selected_options;
         }
       }
 

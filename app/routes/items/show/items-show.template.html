@@ -26,9 +26,9 @@
       <div class="wrapper_title"><h1>{{ section.title }}</h1></div>
 
       <div class="fields">
-        <div class="field" ng-repeat="field in section.fields | orderBy:'position'">
-            <h5 ng-show="field.label !== null">{{ field.label }}</h5>
-            <h5 ng-show="field.label == null">{{ field.title }}</h5>
+        <div class="field" ng-repeat="field in section.fields | orderBy:'position'" ng-hide="field.disabled === true && !getDataByInventoryFieldId(field.id)">
+            <h5 ng-show="field.label !== null">{{ field.label }} <span class="label label-danger" ng-if="field.disabled === true">Campo removido</span></h5>
+            <h5 ng-show="field.label == null">{{ field.title }} <span class="label label-danger" ng-if="field.disabled === true">Campo removido</span></h5>
 
             <!-- special field rendering: images -->
             <div ng-if="field.kind == 'images'">
@@ -36,14 +36,14 @@
             </div>
 
             <!-- special field rendering: checkbox -->
-            <div ng-if="field.kind === 'checkbox'">
+            <div ng-if="field.kind === 'checkbox' || field.kind === 'select' || field.kind === 'radio'">
               <ul>
-                <li ng-repeat="value in getDataByInventoryFieldId(field.id)">{{ value }}</li>
+                <li ng-repeat="option in getSelectedOptionsByFieldId(field.id)">{{ option.value }}</li>
               </ul>
             </div>
 
             <!-- all other fields -->
-            <div ng-if="field.kind !== 'checkbox' && field.kind !== 'images' && getDataByInventoryFieldId(field.id) && getDataByInventoryFieldId(field.id).length != 0">
+            <div ng-if="field.kind !== 'checkbox' && field.kind !== 'select' && field.kind !== 'radio' && field.kind !== 'images' && getDataByInventoryFieldId(field.id) !== null && getDataByInventoryFieldId(field.id).length != 0">
               <p>{{ getDataByInventoryFieldId(field.id) }}
 
               <span ng-if="field.kind == 'meters'">metros</span>
@@ -57,7 +57,7 @@
               <span ng-if="field.kind == 'angle'">ângulo</span></p>
             </div>
 
-            <p ng-show="field.kind !== 'images' && (!getDataByInventoryFieldId(field.id) || getDataByInventoryFieldId(field.id).length == 0)">
+            <p ng-show="field.kind !== 'images' && (getDataByInventoryFieldId(field.id) === null || getDataByInventoryFieldId(field.id).length == 0)">
               Não preenchido.
             </p>
 
