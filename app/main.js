@@ -8,6 +8,7 @@ angular
     'ngCookies',
     'ngAnimate',
     'ngSanitize',
+    'angularMoment',
     'ui.bootstrap',
     'ui.autocomplete',
     'ui.select2', // old version
@@ -21,12 +22,15 @@ angular
     'ngRaven',
     'monospaced.elastic',
     'angularPromiseButtons',
+    'ui.sortable',
+    'dibari.angular-ellipsis',
 
     // Core services
     'AuthServiceModule',
     'UserServiceModule',
     'FullResponseRestangularServiceModule',
     'ErrorServiceModule',
+    'ConfirmDialogDirectiveModule',
 
     // Core components
     'NavItemComponentModule',

@@ -1,38 +1,44 @@
 'use strict';
 
 angular
-  .module('AdvancedFiltersServiceModule', [
-    'AdvancedFiltersQueryModalControllerModule',
-    'AdvancedFiltersCategoryModalControllerModule',
-    'AdvancedFiltersStatusModalControllerModule',
-    'AdvancedFiltersAuthorModalControllerModule',
-    'AdvancedFiltersReporterModalControllerModule',
-    'PeriodSelectorModule',
-    'AdvancedFiltersAreaModalControllerModule',
-    'AdvancedFiltersFieldsModalControllerModule',
-    'AdvancedFiltersShareModalControllerModule',
-    'ReportsCategoriesServiceModule',
-    'InventoriesCategoriesServiceModule'
+.module('AdvancedFiltersServiceModule', [
+  'AdvancedFiltersQueryModalControllerModule',
+  'AdvancedFiltersCategoryModalControllerModule',
+  'AdvancedFiltersStatusModalControllerModule',
+  'AdvancedFiltersAuthorModalControllerModule',
+  'AdvancedFiltersReporterModalControllerModule',
+  'PeriodSelectorModule',
+  'AdvancedFiltersAreaModalControllerModule',
+  'AdvancedFiltersFieldsModalControllerModule',
+  'AdvancedFiltersShareModalControllerModule',
+  'AdvancedFiltersNotificationMinimumNumberModalControllerModule',
+  'AdvancedFiltersNotificationDeadlineModalControllerModule',
+  'AdvancedFiltersNotificationOverdueModalControllerModule',
+  'AdvancedFiltersNotificationSinceLastModalControllerModule',
+  'ReportsCategoriesServiceModule',
+  'InventoriesCategoriesServiceModule',
+  'ReportsPerimetersServiceModule',
+  'AdvancedFiltersShapefileModalControllerModule'
   ])
 
-  /* This file contains common filters used by inventory/reports */
-  .factory('AdvancedFilters', function ($modal, PeriodSelectorService, Restangular, $q, $location, $rootScope, ReportsCategoriesService, InventoriesCategoriesService) {
-    var categoryResolver = function(type) {
-      var list;
+/* This file contains common filters used by inventory/reports */
+.factory('AdvancedFilters', function ($modal, PeriodSelectorService, Restangular, $q, $location, $rootScope, ReportsCategoriesService, InventoriesCategoriesService, ReportsPerimetersService, $log) {
+  var categoryResolver = function(type) {
+    var list;
 
-      if (type === 'items')
-      {
-        list = InventoriesCategoriesService.loadedBasicInfo ? _.values(InventoriesCategoriesService.categories) : InventoriesCategoriesService.fetchAllBasicInfo();
-      }
-      else
-      {
-        list = ReportsCategoriesService.loadedBasicInfo ? _.values(ReportsCategoriesService.categories) : ReportsCategoriesService.fetchAllBasicInfo();
-      }
+    if (type === 'items')
+    {
+      list = InventoriesCategoriesService.loadedBasicInfo ? _.values(InventoriesCategoriesService.categories) : InventoriesCategoriesService.fetchAllBasicInfo();
+    }
+    else
+    {
+      list = ReportsCategoriesService.loadedBasicInfo ? _.values(ReportsCategoriesService.categories) : ReportsCategoriesService.fetchAllBasicInfo();
+    }
 
-      return list;
-    };
+    return list;
+  };
 
-    return {
+  return {
       // advanced filter by category
       query: function (activeAdvancedFilters) {
         $modal.open({
@@ -86,6 +92,26 @@ angular
           controller: 'AdvancedFiltersStatusModalController'
         });
       },
+
+      // advanced filter by shapefile
+      shapefile: function(activeAdvancedFilters) {
+        $rootScope.resolvingRequest = true;
+
+        $modal.open({
+          templateUrl: 'modals/advanced-filters/shapefile/advanced-filters-shapefile.template.html',
+          windowClass: 'filterCategoriesModal',
+          resolve: {
+            'perimetersResponse': function() {
+              return ReportsPerimetersService.fetchAll({paginate: false});
+            },
+
+            activeAdvancedFilters: function() {
+              return activeAdvancedFilters;
+            }
+          },
+          controller: 'AdvancedFiltersShapefileModalController'
+        });
+},
 
       // advanced filter by the author of the item
       author: function(activeAdvancedFilters) {
@@ -153,6 +179,62 @@ angular
             }
           },
           controller: 'AdvancedFiltersAreaModalController'
+        });
+      },
+
+      // advanced filter by minimum notification number
+      notificationMinimumNumber: function(activeAdvancedFilters) {
+        return $modal.open({
+          templateUrl: 'modals/advanced-filters/notification/minimum-number/advanced-filters-notification-minimum-number.template.html',
+          windowClass: 'filterNotificationMininumNumberModal',
+          resolve: {
+            activeAdvancedFilters: function() {
+              return activeAdvancedFilters;
+            }
+          },
+          controller: 'AdvancedFiltersNotificationMinimumNumberModalController'
+        });
+      },
+
+      // advanced filter by days since last notification
+      notificationSinceLast: function(activeAdvancedFilters) {
+        return $modal.open({
+          templateUrl: 'modals/advanced-filters/notification/since-last/advanced-filters-notification-since-last.template.html',
+          windowClass: 'filterNotificationModal',
+          resolve: {
+            activeAdvancedFilters: function() {
+              return activeAdvancedFilters;
+            }
+          },
+          controller: 'AdvancedFiltersNotificationSinceLastModalController'
+        });
+      },
+
+      // advanced filter by days for last notification deadline
+      notificationDeadline: function(activeAdvancedFilters) {
+        return $modal.open({
+          templateUrl: 'modals/advanced-filters/notification/deadline/advanced-filters-notification-deadline.template.html',
+          windowClass: 'filterNotificationModal',
+          resolve: {
+            activeAdvancedFilters: function() {
+              return activeAdvancedFilters;
+            }
+          },
+          controller: 'AdvancedFiltersNotificationDeadlineModalController'
+        });
+      },
+
+      // advanced filter by days for overdue notification
+      notificationOverdue: function(activeAdvancedFilters) {
+        return $modal.open({
+          templateUrl: 'modals/advanced-filters/notification/overdue/advanced-filters-notification-overdue.template.html',
+          windowClass: 'filterNotificationModal',
+          resolve: {
+            activeAdvancedFilters: function() {
+              return activeAdvancedFilters;
+            }
+          },
+          controller: 'AdvancedFiltersNotificationOverdueModalController'
         });
       },
 

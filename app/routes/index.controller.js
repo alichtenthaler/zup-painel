@@ -3,7 +3,7 @@ angular
 
   .controller('IndexController', function(User, $state, $rootScope, $scope, $log) {
 
-    $log.info('IndexController created.');
+    $log.debug('IndexController created.');
 
     if (User)
     {
@@ -13,7 +13,7 @@ angular
       }
       else
       {
-        $state.go('reports.list');
+        $state.go('reports.index.list');
       }
     }
     else
@@ -22,7 +22,7 @@ angular
     }
 
     $scope.$on('$destroy', function() {
-      $log.info('IndexController destroyed.');
+      $log.debug('IndexController destroyed.');
     });
 
   });

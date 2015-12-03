@@ -1,9 +1,8 @@
 @charset "UTF-8";
-$icon-font-path: "../fonts/";
-$fa-font-path:   "../fonts/";
+$fa-font-path:   "../fonts";
 
-@import 'sass-bootstrap/lib/bootstrap';
-@import 'font-awesome/scss/font-awesome';
+@import 'sass-bootstrap/lib/variables';
+@import 'sass-bootstrap/lib/mixins';
 @import "compass/css3";
 @import "animate";
 
@@ -311,7 +310,7 @@ $sidebar-size-full: 300px;
         margin: 17px 15px 0 0;
       }
 
-      ul {
+      ul:first-child {
         float: left;
         list-style: none;
         margin: 19px 0 0 25px;
@@ -324,9 +323,21 @@ $sidebar-size-full: 300px;
 
           &:after {
             content: "\e080";
-            @extend .glyphicon;
             color: #C5C5C5;
             margin-left: 10px;
+            position: relative;
+            top: 1px;
+            display: inline-block;
+            font-family: 'Glyphicons Halflings';
+            font-style: normal;
+            font-weight: normal;
+            line-height: 1;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+
+            &:empty {
+              width: 1em;
+            }
           }
 
           &:last-child:after {
@@ -1291,6 +1302,13 @@ $sidebar-size-full: 300px;
   }
 }
 
+.nice-and-centered {
+  width: 100%;
+  text-align: center;
+  font-size: 15px;
+  color: #666;
+}
+
 #full_page {
   width: 100%;
   height: 100%;
@@ -1637,7 +1655,7 @@ $sidebar-size-full: 300px;
       background: #F0F0F0;
       border-bottom: 1px solid #E1E1E1;
       padding: 18px 19px;
-      position: relative;
+      position: static;
       z-index: 3;
 
       .type {
@@ -2495,6 +2513,18 @@ $sidebar-size-full: 300px;
   text-align: right;
 }
 
+.pull-text-left {
+  text-align: left;
+}
+
+.pull-text-center {
+  text-align: center;
+}
+
+.pull-text-justify {
+  text-align: justify;
+}
+
 // google maps autocomplete
 .pac-icon-marker {
   display: none !important;
@@ -2528,7 +2558,7 @@ $sidebar-size-full: 300px;
   min-width: 387px;
   border-radius: 5px !important;
   background: #fff !important;
-  z-index: 10000 !important;
+  z-index: 10050 !important;
   margin-top: 10px;
 }
 
@@ -2608,7 +2638,7 @@ colorpicker-alpha,
   top: 0;
   left: 0;
   position: absolute;
-  z-index: 9999;
+  z-index: 11000;
   display: none;
 }
 
@@ -2730,46 +2760,71 @@ colorpicker-preview {
 
 .fade-animation.ng-hide-add,
 .fade-animation.ng-hide-remove {
-  -webkit-transition: 0.5s linear all;
-  transition: 0.5s linear all;
+  @include transition(0.5s linear all);
 
   /* remember to add this */
-  display: block !important;
-  opacity: 1;
+  display:block!important;
+  @include opacity(1);
 }
 
-.fade-animation.ng-hide {
-  opacity: 0;
+.fade-animation.ng-enter,
+.fade-animation.ng-leave {
+  @include transition(0.5s linear all);
+}
+
+.fade-animation.ng-leave,
+.fade-animation.ng-enter.ng-enter-active {
+  @include opacity(1);
+}
+
+.fade-animation.ng-hide,
+.fade-animation.ng-enter,
+.fade-animation.ng-leave.ng-leave-active{
+  @include opacity(0);
 }
 
 // page animation
 .app-animation.ng-hide-add,
 .app-animation.ng-hide-remove {
-  -webkit-transition: 0.6s linear all;
-  transition: 0.6s linear all;
+  @include transition(0.6s linear all);
 
   /* remember to add this */
-  display: block !important;
-  opacity: 1;
+  display:block!important;
+  @include opacity(1);
 }
 
 .app-animation.ng-hide {
-  opacity: 0;
+  @include opacity(0);
+}
+
+.app-animation.ng-enter,
+.app-animation.ng-leave {
+  @include transition(0.6s linear all);
+}
+
+.app-animation.ng-leave,
+.app-animation.ng-enter.ng-enter-active {
+  @include opacity(1);
+}
+
+.app-animation.ng-hide,
+.app-animation.ng-enter,
+.app-animation.ng-leave.ng-leave-active{
+  @include opacity(0);
 }
 
 // page animation
 .pages-animation.ng-hide-add,
 .pages-animation.ng-hide-remove {
-  -webkit-transition: 0.25s linear all;
-  transition: 0.25s linear all;
+  @include transition(0.25s linear all);
 
   /* remember to add this */
-  display: block !important;
-  opacity: 1;
+  display:block!important;
+  @include opacity(1);
 }
 
 .pages-animation.ng-hide {
-  opacity: 0;
+  @include opacity(0);
 }
 
 .resolving-route {
@@ -3027,7 +3082,7 @@ colorpicker-preview {
   padding: 0 !important;
   margin-left: 30px !important;
   max-height: 100% !important;
-  z-index: 9999 !important;
+  z-index: 11000 !important;
   .ui-menu-item {
     width: 100% !important;
     a {
@@ -4524,8 +4579,7 @@ colorpicker-preview {
   color: #7EBA27;
 }
 
-// effects
-@-webkit-keyframes rotating {
+@include keyframes(rotating) {
   from {
     @include rotate(0deg);
   }
@@ -4533,7 +4587,6 @@ colorpicker-preview {
     @include rotate(360deg);
   }
 }
-
 .rotating {
   @include animation(rotating 2s linear infinite);
 }
@@ -4549,6 +4602,10 @@ colorpicker-preview {
 .ghost-icon {
   @include opacity(.3);
 }
+
+
+
+@import "components";
 
 /* Error modal */
 
@@ -4615,4 +4672,21 @@ colorpicker-preview {
     @include animation-duration(0.6s);
     @include animation-name(flipOutX);
   }
+}
+
+@media (max-width: 1300px) {
+  .tab-label {
+    display: none;
+  }
+}
+
+/**
+ * @todo Fix classes orientation on build process
+ */
+.modal-backdrop.fade.in {
+  @include opacity(.5);
+}
+
+.select2-drop {
+  z-index: 10050;
 }

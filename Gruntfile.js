@@ -15,7 +15,6 @@ module.exports = function (grunt) {
 
     SERVER_IP: process.env.SERVER_IP || '127.0.0.1',
     SERVER_PORT: process.env.SERVER_PORT || 9000,
-    THEME: process.env.THEME || 'zup',
     API_URL: process.env.API_URL,
     MAP_LAT: process.env.MAP_LAT,
     MAP_LNG: process.env.MAP_LNG,
@@ -49,7 +48,7 @@ module.exports = function (grunt) {
         tasks: ['newer:jshint:test']
       },
       compass: {
-        files: ['<%= yeoman.app %>/assets/styles/{,*/}*.{scss,sass}'],
+        files: ['<%= yeoman.app %>/assets/styles/{,*/}*.{scss,sass}', '<%= yeoman.app %>/components/{,*/}*.{scss,sass}'],
         tasks: ['compass:server', 'autoprefixer']
       },
       gruntfile: {
@@ -137,7 +136,7 @@ module.exports = function (grunt) {
     // Add vendor prefixed styles
     autoprefixer: {
       options: {
-        browsers: ['last 1 version']
+        browsers: ['last 2 version', '> 10%']
       },
       dist: {
         files: [{
@@ -157,11 +156,16 @@ module.exports = function (grunt) {
       options: {
         directory: '<%= yeoman.app %>/bower_components',
         ignorePath: '<%= yeoman.app %>/',
-        exclude: [],
+        exclude: ['/ckeditor/', '/base64image_1.3/', '/font_4.5.1/', '/imagepaste_1.1.1/', '/bootstrapck_1.0_0/', '/tableresize_4.5.1/', '/colorbutton_4.5.3/', '/print_4.5.3/'],
         overrides: {
           "bootstrap": {
             "main": [
               "dist/css/bootstrap.css"
+            ]
+          },
+          "font-awesome": {
+            "main": [
+              "css/font-awesome.css"
             ]
           }
         }
@@ -198,23 +202,23 @@ module.exports = function (grunt) {
     },
 
     // Renames files for browser caching purposes
-    rev: {
+    filerev: {
       dist: {
-        files: {
-          src: [
-            '<%= yeoman.dist %>/**/*.route.js',
-            '<%= yeoman.dist %>/**/*.controller.js',
-            '<%= yeoman.dist %>/**/*.directive.js',
-            '<%= yeoman.dist %>/**/*.filter.js',
-            '!<%= yeoman.dist %>/config/main.constants.js',
-            '<%= yeoman.dist %>/assets/styles/{,*/}*.css',
-            '<%= yeoman.dist %>/assets/scripts/{,*/}*.js',
-            '<%= yeoman.dist %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '!<%= yeoman.dist %>/assets/images/icons/{,*/}*.{png,jpg,jpeg,gif,webp,svg}', // icons won't be modified
-            '!<%= yeoman.dist %>/assets/images/logos/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= yeoman.dist %>/assets/fonts/*'
-          ]
-        }
+        src: [
+          '<%= yeoman.dist %>/**/*.route.js',
+          '<%= yeoman.dist %>/**/*.controller.js',
+          '<%= yeoman.dist %>/**/*.directive.js',
+          '<%= yeoman.dist %>/**/*.filter.js',
+          '!<%= yeoman.dist %>/config/main.constants.js',
+          '<%= yeoman.dist %>/assets/scripts/{,*/}*.js',
+          '!<%= yeoman.dist %>/assets/scripts/ckeditor/**',
+          '<%= yeoman.dist %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '!<%= yeoman.dist %>/assets/images/icons/{,*/}*.{png,jpg,jpeg,gif,webp,svg}', // icons won't be modified
+          '!<%= yeoman.dist %>/assets/images/logos/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= yeoman.dist %>/assets/fonts/*',
+          '<%= yeoman.dist %>/assets/styles/{,*/}*.css',
+          '!<%= yeoman.dist %>/assets/styles/theme.css'
+        ]
       }
     },
 
@@ -230,11 +234,25 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on rev and the useminPrepare configuration
     usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html', '<%= yeoman.dist %>/**/*.template.html'],
-      css: ['<%= yeoman.dist %>/assets/styles/{,*/}*.css'],
-      js: ['<%= yeoman.dist %>/**/*.route.js', '<%= yeoman.dist %>/**/*.controller.js', '<%= yeoman.dist %>/**/*.filter.js', '<%= yeoman.dist %>/**/*.directive.js'],
+      html: [
+        '<%= yeoman.dist %>/{,*/}*.html',
+        '<%= yeoman.dist %>/**/*.template.html'
+      ],
+      css: [
+        '<%= yeoman.dist %>/assets/styles/{,*/}*.css'
+      ],
+      js: [
+        '<%= yeoman.dist %>/**/*.route.js',
+        '<%= yeoman.dist %>/**/*.controller.js',
+        '<%= yeoman.dist %>/**/*.filter.js',
+        '<%= yeoman.dist %>/**/*.directive.js'
+      ],
       options: {
-        assetsDirs: ['<%= yeoman.dist %>', '<%= yeoman.dist %>/assets/images', '<%= yeoman.dist %>/assets/fonts'],
+        assetsDirs: [
+          '<%= yeoman.dist %>',
+          '<%= yeoman.dist %>/assets/images',
+          '<%= yeoman.dist %>/assets/fonts'
+        ],
         patterns: {
           // FIXME While usemin won't have full support for revved files we have to put all references manually here
           js: [
@@ -306,6 +324,65 @@ module.exports = function (grunt) {
 
     // Copies remaining files to places other tasks can use
     copy: {
+      desenv: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/bower_components/base64image_1.3',
+            dest: '<%= yeoman.app %>/bower_components/ckeditor/plugins/base64image',
+            src: ['**/*']
+          },
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/bower_components/font_4.5.1',
+            dest: '<%= yeoman.app %>/bower_components/ckeditor/plugins/font',
+            src: ['**/*']
+          },
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/bower_components/imagepaste_1.1.1',
+            dest: '<%= yeoman.app %>/bower_components/ckeditor/plugins/imagepaste',
+            src: ['**/*']
+          },
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/bower_components/bootstrapck_1.0_0',
+            dest: '<%= yeoman.app %>/bower_components/ckeditor/skins/bootstrapck',
+            src: ['**/*']
+          },
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/bower_components/tableresize_4.5.1',
+            dest: '<%= yeoman.app %>/bower_components/ckeditor/plugins/tableresize',
+            src: ['**/*']
+          },
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/bower_components/colorbutton_4.5.3',
+            dest: '<%= yeoman.app %>/bower_components/ckeditor/plugins/colorbutton',
+            src: ['**/*']
+          },
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/bower_components/print_4.5.3',
+            dest: '<%= yeoman.app %>/bower_components/ckeditor/plugins/print',
+            src: ['**/*']
+          },
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/bower_components/justify',
+            dest: '<%= yeoman.app %>/bower_components/ckeditor/plugins/justify',
+            src: ['**/*']
+          },
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/components/ckeditor-custom-plugins/zupplaceholder',
+            dest: '<%= yeoman.app %>/bower_components/ckeditor/plugins/zupplaceholder',
+            src: ['**/*']
+          }
+        ]
+
+      },
       dist: {
         files: [{
           expand: true,
@@ -327,6 +404,56 @@ module.exports = function (grunt) {
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/assets/images',
           src: ['generated/*']
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>/bower_components/ckeditor',
+          dest: '<%= yeoman.dist %>/assets/scripts/ckeditor',
+          src: ['**/*']
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>/bower_components/base64image_1.3',
+          dest: '<%= yeoman.dist %>/assets/scripts/ckeditor/plugins/base64image',
+          src: ['**/*']
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>/bower_components/font_4.5.1',
+          dest: '<%= yeoman.dist %>/assets/scripts/ckeditor/plugins/font',
+          src: ['**/*']
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>/bower_components/imagepaste_1.1.1',
+          dest: '<%= yeoman.dist %>/assets/scripts/ckeditor/plugins/imagepaste',
+          src: ['**/*']
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>/bower_components/bootstrapck_1.0_0',
+          dest: '<%= yeoman.dist %>/assets/scripts/ckeditor/skins/bootstrapck',
+          src: ['**/*']
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>/bower_components/tableresize_4.5.1',
+          dest: '<%= yeoman.dist %>/assets/scripts/ckeditor/plugins/tableresize',
+          src: ['**/*']
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>/bower_components/colorbutton_4.5.3',
+          dest: '<%= yeoman.dist %>/assets/scripts/ckeditor/plugins/colorbutton',
+          src: ['**/*']
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>/bower_components/print_4.5.3',
+          dest: '<%= yeoman.dist %>/assets/scripts/ckeditor/plugins/print',
+          src: ['**/*']
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>/bower_components/justify',
+          dest: '<%= yeoman.dist %>/assets/scripts/ckeditor/plugins/justify',
+          src: ['**/*']
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>/components/ckeditor-custom-plugins/zupplaceholder',
+          dest: '<%= yeoman.dist %>/assets/scripts/ckeditor/plugins/zupplaceholder',
+          src: ['**/*']
         }]
       },
       styles: {
@@ -351,7 +478,6 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'development',
-            theme: '<%= THEME %>',
             apiEndpoint: '<%= API_URL %>',
             mapLat: '<%= MAP_LAT %>',
             mapLng: '<%= MAP_LNG %>',
@@ -359,7 +485,8 @@ module.exports = function (grunt) {
             flowsEnabled: '<%= FLOWS_ENABLED %>',
             defaultCity: '<%= DEFAULT_CITY %>',
             defaultState: '<%= DEFAULT_STATE %>',
-            defaultCountry: '<%= DEFAULT_COUNTRY %>'
+            defaultCountry: '<%= DEFAULT_COUNTRY %>',
+            ckeditorPath: 'bower_components/ckeditor/ckeditor.js'
           }
         }
       },
@@ -374,12 +501,12 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'production',
-            theme: '<%= THEME %>',
             apiEndpoint: '<%= API_URL %>',
             mapLat: '<%= MAP_LAT %>',
             mapLng: '<%= MAP_LNG %>',
             mapZoom: '<%= MAP_ZOOM %>',
-            flowsEnabled: '<%= FLOWS_ENABLED %>'
+            flowsEnabled: '<%= FLOWS_ENABLED %>',
+            ckeditorPath: 'assets/scripts/ckeditor/ckeditor.js'
           }
         }
       }
@@ -434,6 +561,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'wiredep',
+      'copy:desenv',
       'ngconstant:angularLocal',
       'concurrent:server',
       'autoprefixer',
@@ -472,7 +600,7 @@ module.exports = function (grunt) {
     'cssmin',
     'string-replace',
     'uglify',
-    'rev',
+    'filerev',
     'usemin',
     'htmlmin'
   ]);

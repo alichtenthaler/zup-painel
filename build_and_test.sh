@@ -43,6 +43,7 @@ echo SMTP_TTLS=true >> api.env
 echo SMTP_AUTH=plain >> api.env
 echo REDIS_URL=redis://redis:6379 >> api.env
 echo RACK_ENV=production >> api.env
+echo DISABLE_EMAIL_SENDING=true >> api.env
 echo DATABASE_URL=postgis://zup:zup@postgres:5432/zup >> api.env
 
 set -xe
@@ -64,7 +65,6 @@ setup_api &
 API_PID=$!
 
 # Painel env vars
-echo THEME=zup >> build.env
 echo API_URL=http://api:80 >> build.env
 echo MAP_LAT=-23.549671 >> build.env
 echo MAP_LNG=-46.6321713 >> build.env
@@ -77,15 +77,17 @@ echo SERVER_PORT=9001 >> build.env
 echo USER_EMAIL=tecnologia@ntxdev.com.br >> build.env
 echo USER_PASSWORD=123456 >> build.env
 echo FLOWS_ENABLED=true >> build.env
+echo SENTRY_DSN=https://318ae5c375b74a07a40b244d327a9090@app.getsentry.com/17327 >> build.env
+echo GOOGLE_ANALYTICS=AIzaSyCsgDC7RbPvhfSCDQgC1R4NXWaT9Rw2VHE >> build.env
 
 # Build & test
 docker build -t $BUILDER_NAME .
 wait $API_PID
-docker run -a stdout -a stderr --link $API_NAME:api --name $BUILDER_NAME $BUILDER_NAME
+docker run -v /dev/shm:/dev/shm -a stdout -a stderr --link $API_NAME:api --name $BUILDER_NAME $BUILDER_NAME
 
 deploy() {
   rm -rf zup-web || true
-  git clone --depth 1 --branch $CI_BUILD_REF_NAME https://$DOCKER_USERNAME:$DOCKER_PASSWORD@gitlab.com/ntxcode/zup-web.git || git clone --depth 1 --branch master https://$DOCKER_USERNAME:$DOCKER_PASSWORD@gitlab.com/ntxcode/zup-web.git
+  git clone --depth 1 --branch $CI_BUILD_REF_NAME $ZUP_WEB_REPO_ACCESS || git clone --depth 1 --branch master $ZUP_WEB_REPO_ACCESS
   cd zup-web
   [[ $(git symbolic-ref --short -q HEAD) = $CI_BUILD_REF_NAME ]] || git checkout -b $CI_BUILD_REF_NAME
   rm -rf zup-painel

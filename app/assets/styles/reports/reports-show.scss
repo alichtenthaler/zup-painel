@@ -16,6 +16,18 @@
   box-shadow: none;
 }
 
+div.report-image {
+  width: 100%;
+  text-align: left;
+  img {
+    max-width: 150px !important;
+    padding: 5px !important;
+  }
+  span {
+    display: inline-table;
+  }
+}
+
 ul.report-menu {
   background: #FFF;
   width: 100%;

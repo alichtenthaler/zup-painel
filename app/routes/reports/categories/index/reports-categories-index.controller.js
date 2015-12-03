@@ -16,14 +16,15 @@ angular
         if (category.parent_id !== null) {
           var parentIndex = categories.indexOf(_.findWhere(categories, { id: category.parent_id }));
 
-          if (parentIndex === -1) return false;
+          if (parentIndex === -1) {
+            return false;
+          }
 
           var ownIndex = categories.indexOf(category);
 
           if (_.isUndefined(categories[parentIndex].subcategories)) {
             categories[parentIndex].subcategories = [category];
-          }
-          else {
+          } else {
             categories[parentIndex].subcategories.push(category);
           }
 
@@ -32,11 +33,10 @@ angular
 
         // since we defined every subcategory as undefined, let's clean it up :)
         categories = _.without(categories, undefined);
-
         $scope.categories = categories;
-
-        $scope.loading = false;
       });
+
+      $scope.loading = false;
     };
 
     ReportsCategoriesService.fetchAllBasicInfo().then(function(response) {
@@ -58,10 +58,8 @@ angular
                 var subcategories = _.findWhere($scope.categories, { id: category.parent_id }).subcategories;
                 subcategories.splice(subcategories.indexOf(category), 1);
               }
-
             }
           },
-
           category: function() {
             return category;
           }

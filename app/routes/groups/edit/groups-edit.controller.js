@@ -12,7 +12,6 @@ angular
     $scope.flows = objectsResponse.data.flows;
     $scope.inventoriesCategories = objectsResponse.data.inventory_categories;
     $scope.reportsCategories = objectsResponse.data.reports_categories;
-    $scope.businessReports = objectsResponse.data.business_reports;
 
     $scope.newPermission = { type: null, objects: [], slugs: [] };
 
@@ -197,7 +196,7 @@ angular
             slug: 'reports_items_read_public',
             name: 'Visualizar relatos parcial',
             needsObject: true,
-            tooltip: 'A visualização de relato parcial é uma permissão que restringe o acesso as informações do relato, isto é, os usuários do grupo não poderão visualizar as observações internas, as respostas enviadas ao munícipe no modo privado e o protocolo. Os usuário exergarão todas as demais informações da tela.'
+            tooltip: 'A visualização de relato parcial é uma permissão que restringe o acesso as informações do relato, isto é, os usuários do grupo não poderão visualizar as observações internas, as respostas enviadas ao solicitante no modo privado e o protocolo. Os usuário exergarão todas as demais informações da tela.'
           },
 
           {
@@ -223,9 +222,23 @@ angular
 
           {
             slug: 'reports_items_create_comment',
-            name: 'Enviar comentários ao munícipe',
+            name: 'Enviar comentários ao solicitante',
             needsObject: true,
             tooltip: 'Grupo pode adicionar comentário público ou privado nos relatos da categoria atribuída.'
+          },
+
+          {
+            slug: 'reports_items_send_notification',
+            name: 'Enviar notificação de relato',
+            needsObject: true,
+            tooltip: 'Grupo pode enviar e reenviar notificações.'
+          },
+
+          {
+            slug: 'reports_items_restart_notification',
+            name: 'Reeiniciar processo de notificação de relato',
+            needsObject: true,
+            tooltip: 'Grupo pode reiniciar todo o processo de notificações.'
           }
         ]
       },
@@ -406,7 +419,7 @@ angular
         break;
 
         default:
-          return $scope.newPermission.objects.length + ' itens selecionados';
+          return $scope.newPermission.objects.length + ' categorias selecionadas';
       }
     };
 
@@ -509,8 +522,7 @@ angular
         $scope.showPermissionsMenu = false;
         $scope.showObjectsMenu = false;
 
-        if(permissionType)
-          $scope.newPermission.type = permissionType.type;
+        $scope.newPermission.type = permissionType ? permissionType.type : null;
       });
     };
 
